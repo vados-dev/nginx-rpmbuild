@@ -103,7 +103,7 @@ jobs:
           # Discover latest numeric tag from existing GHCR image versions.
           owner_lc="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
           repo_name="${GITHUB_REPOSITORY#*/}"
-          package_name="${repo_name}/ci"
+          package_name="${repo_name}/${CI_IMAGE_NAME}"
           package_name_enc="${package_name//\//%2F}"
           tags_json="$(gh api -H "Accept: application/vnd.github+json" "/users/${owner_lc}/packages/container/${package_name_enc}/versions?per_page=100" 2>/dev/null || echo '[]')"
           latest_registry_numeric_tag="$(
@@ -154,8 +154,10 @@ jobs:
           platforms: ${{ inputs.build_platforms }}
           push: true
           tags: |
-            ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
-            ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}
+            ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.annotations }}           
+
+#                      ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}
 
 #          meta-images: ${CI_IMAGE_NAME}
 #          meta-tags: |
@@ -223,6 +225,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.amsternl != '' && secrets.amsternl || github.token }}
           DELETE_TAGS: ${{ inputs.delete_tags }}
+          image_ci: ${{ steps.meta.outputs.image }}
         run: |
           set -euo pipefail
           if [[ -z "${DELETE_TAGS// }" ]]; then
@@ -232,7 +235,7 @@ jobs:
 
           owner_lc="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
           repo_name="${GITHUB_REPOSITORY#*/}"
-          package_name="${repo_name}/ci"
+          package_name="${repo_name}/${image_ci}"
           package_name_enc="${package_name//\//%2F}"
           tags="$(echo "${DELETE_TAGS}" | tr ',' ' ' | xargs -n1 | sed '/^$/d' | sort -u)"
 
