@@ -41,7 +41,7 @@ on:
       base_modules:
         description: "Space-separated RPM modules for pkg-oss (example: acme geoip2 image-filter njs otel perl xslt)"
         required: false
-        default: ""
+        default: "acme geoip2 image-filter njs otel perl xslt"
         type: string
       disable_debug_packages:
         description: "Disable debug/debuginfo packages"
@@ -601,6 +601,9 @@ jobs:
           cp -a "${source_root}/${os_token}/${release_token}/${channel}" "repo/${os_token}/${release_token}/${channel}"
           if [[ -f "${GITHUB_WORKSPACE}/SOURCES/RPM-GPG-KEY-nginx" ]]; then
             cp -f "${GITHUB_WORKSPACE}/SOURCES/RPM-GPG-KEY-nginx" "repo/RPM-GPG-KEY-nginx"
+          fi
+          if [[ -f "${GITHUB_WORKSPACE}/src/RPM-GPG-KEY-nginx" ]]; then
+            cp -f "${GITHUB_WORKSPACE}/src/RPM-GPG-KEY-nginx" "repo/RPM-GPG-KEY-nginx"
           fi
 
           {
