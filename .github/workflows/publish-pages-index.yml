@@ -12,8 +12,7 @@ on:
       - README.md
       - .github/workflows/publish-pages-index.yml
       - .github/pages/site.json
-      - SOURCES/gh-pages.tar.gz
-      - SOURCES/RPM-GPG-KEY-nginx
+      - src/*
   workflow_dispatch:
 
 jobs:
