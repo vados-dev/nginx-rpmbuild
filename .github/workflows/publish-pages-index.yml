@@ -1,4 +1,4 @@
-name: Publish Pages Index
+name: Publish Pages Index main
 
 permissions:
   contents: write
@@ -8,11 +8,13 @@ on:
   push:
     branches:
       - main
+      - oss-build
     paths:
       - README.md
       - .github/workflows/publish-pages-index.yml
       - .github/pages/site.json
       - SOURCES/gh-pages.tar.gz
+      - SOURCES/RPM-GPG-KEY-nginx
   workflow_dispatch:
 
 jobs:
