@@ -42,9 +42,9 @@ on:
         default: true
         type: boolean
       build_base:
-        description: "Space-separated RPM modules for pkg-oss (example: acme geoip2 image-filter njs otel perl xslt)"
+        description: "Build base nginx package"
         required: true
-        default: false
+        default: true
         type: boolean
       base_modules:
         description: "Space-separated RPM modules for pkg-oss (example: acme geoip2 image-filter njs otel perl xslt)"
