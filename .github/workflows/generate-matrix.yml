@@ -1,4 +1,7 @@
-name: Generate Matrix
+name: Generate Matrix oss-build
+
+env:
+  DEFAULT_RPM_IMAGE: ghcr.io/vados-dev/nginx-custom-builder/centos-10:lts
 
 on:
   workflow_dispatch:
@@ -461,7 +464,7 @@ jobs:
     needs: generate-matrix
     if: ${{ needs.generate-matrix.outputs.run-redhat == 'true' }}
     runs-on: ubuntu-24.04
-    container: ghcr.io/vados-dev/nginx-custom-builder/ci:lts
+    container: ${{ env.DEFAULT_RPM_IMAGE }}
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix-redhat)}}
